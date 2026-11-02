@@ -1,0 +1,13 @@
+{
+  "id": "tsumiki",
+  "name": "Tsumiki",
+  "kanji": "積",
+  "tagline": "Poser les blocs, effacer les lignes",
+  "introArt": "<rect x=\"90\" y=\"40\" width=\"120\" height=\"120\" rx=\"6\" style=\"fill:none;stroke:var(--ink3);stroke-width:2\"/><rect x=\"94\" y=\"131\" width=\"25\" height=\"25\" rx=\"4\" style=\"fill:var(--ink);opacity:0;animation:fade .2s ease-out 0.10s forwards\"/><rect x=\"123\" y=\"131\" width=\"25\" height=\"25\" rx=\"4\" style=\"fill:var(--ink);opacity:0;animation:fade .2s ease-out 0.22s forwards\"/><rect x=\"152\" y=\"131\" width=\"25\" height=\"25\" rx=\"4\" style=\"fill:var(--ink);opacity:0;animation:fade .2s ease-out 0.34s forwards\"/><rect x=\"94\" y=\"102\" width=\"25\" height=\"25\" rx=\"4\" style=\"fill:var(--ink);opacity:0;animation:fade .2s ease-out 0.46s forwards\"/><rect x=\"123\" y=\"102\" width=\"25\" height=\"25\" rx=\"4\" style=\"fill:var(--ink);opacity:0;animation:fade .2s ease-out 0.58s forwards\"/><rect x=\"94\" y=\"73\" width=\"25\" height=\"25\" rx=\"4\" style=\"fill:var(--ink);opacity:0;animation:fade .2s ease-out 0.70s forwards\"/><rect x=\"181\" y=\"131\" width=\"25\" height=\"25\" rx=\"4\" style=\"fill:var(--ink);opacity:0;animation:fade .2s ease-out 0.82s forwards\"/><rect x=\"92\" y=\"129\" width=\"116\" height=\"29\" rx=\"4\" style=\"fill:var(--red2);opacity:0;animation:fade .2s ease-out 1s forwards\"/>",
+  "scripts": [
+    "tsumiki.js"
+  ],
+  "css": [
+    "tsumiki.css"
+  ]
+}

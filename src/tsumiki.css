@@ -1,0 +1,17 @@
+.tk-bg{fill:var(--ink);fill-opacity:.035;stroke:var(--ink3);stroke-width:1.5}
+.tk-slot{fill:var(--ink);fill-opacity:.05}
+.tk-b rect{fill:var(--ink)}
+.tk-b rect.in{fill:none;stroke:var(--navy2);stroke-opacity:.22;stroke-width:2}
+.tk-b.hot rect:first-child{fill:var(--red2)}
+.tk-b.over rect:first-child{fill:var(--ink2)}
+.tk-b.tray.dead{opacity:.28}
+.tk-b.float{opacity:.9}
+.tk-ghost rect:first-child{fill:var(--ink);fill-opacity:.22;stroke:var(--ink);stroke-width:2;stroke-dasharray:6 5}
+.tk-ghost rect.in{display:none}
+.tk-ghost.hot rect:first-child{fill:var(--red2);fill-opacity:.45}
+.tk-pop rect:first-child{fill:var(--red2);transform-box:fill-box;transform-origin:center;animation:tkpop .4s ease-in forwards}
+.tk-pop rect.in{display:none}
+@keyframes tkpop{0%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(.3)}}
+.tk-gain{fill:var(--red2);font-family:'Chiffres','Shippori Mincho',serif;font-size:34px;font-weight:700;text-anchor:middle;animation:tkgain .9s ease-out forwards}
+@keyframes tkgain{0%{opacity:0;transform:translateY(10px)}20%{opacity:1}100%{opacity:0;transform:translateY(-30px)}}
+body.arcade #area{border:0}
