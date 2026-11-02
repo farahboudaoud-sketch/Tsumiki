@@ -84,6 +84,21 @@
   }
   const block = (x, y, w, cls) => `<g class="${cls}"><rect x="${x + 2.5}" y="${y + 2.5}" width="${w - 5}" height="${w - 5}" rx="${w * .12}"/><rect class="in" x="${x + w * .28}" y="${y + w * .28}" width="${w * .44}" height="${w * .44}" rx="${w * .06}"/></g>`;
 
+  const FIGS = (() => {
+    const s = 16;
+    const cell = (r, c, cls) => `<rect class="${cls}" x="${c * s + 1.5}" y="${r * s + 1.5}" width="${s - 3}" height="${s - 3}" rx="3"/>`;
+    let a = figGrid(5, 5, s).replace(/class="fl"/g, 'class="fl" style="opacity:.5"');
+    [[4, 0], [4, 1], [4, 4], [3, 0], [3, 4], [2, 4]].forEach(([r, c]) => a += cell(r, c, 'fi'));
+    [[4, 2], [4, 3], [3, 3]].forEach(([r, c]) => a += cell(r, c, 'fr'));
+    a += `<rect class="frs" x="1" y="${4 * s + 1}" width="${5 * s - 2}" height="${s - 2}" rx="3"/>`;
+    let b = figGrid(5, 5, s).replace(/class="fl"/g, 'class="fl" style="opacity:.5"');
+    for (let k = 0; k < 5; k++) { if (k !== 2) { b += cell(2, k, 'fi'); b += cell(k, 2, 'fi'); } }
+    b += cell(2, 2, 'fr');
+    b += `<rect class="frs" x="1" y="${2 * s + 1}" width="${5 * s - 2}" height="${s - 2}" rx="3"/><rect class="frs" x="${2 * s + 1}" y="1" width="${s - 2}" height="${5 * s - 2}" rx="3"/>`;
+    return figFigs(
+      ruleFig(a, 5 * s, 5 * s, 'La pièce (en rouge) complète la ligne du bas : elle s\'efface.'),
+      ruleFig(b, 5 * s, 5 * s, 'Une ligne et une colonne d\'un coup : beaucoup plus de points.'));
+  })();
   registerGame({
     id: 'tsumiki', name: 'Tsumiki', kanji: '積', winText: 'Plus de place',
     arcade: true, noHints: true, noZoom: true, recordHigh: true, statLabel: 'Score', newText: 'Nouvelle partie',
@@ -97,7 +112,7 @@
       <li>Fais glisser les <b>trois pièces</b> du bas sur le plateau. Les pièces ne tournent pas.</li>
       <li>Une <b>ligne</b> ou une <b>colonne</b> complète s'efface et rapporte des points. Plusieurs à la fois rapportent beaucoup plus.</li>
       <li>Effacer des lignes plusieurs coups de suite crée une <b>série</b> qui multiplie les points (elle s'arrête après 3 coups sans ligne).</li>
-      <li>Quand les trois pièces sont posées, trois nouvelles arrivent. La partie s'arrête quand <b>plus aucune pièce ne rentre</b>.</li></ul>
+      <li>Quand les trois pièces sont posées, trois nouvelles arrivent. La partie s'arrête quand <b>plus aucune pièce ne rentre</b>.</li></ul>${FIGS}
       <h3>Modes</h3><ul><li><b>Défi</b> 7×7, <b>Classique</b> 8×8, <b>Grand</b> 10×10.</li></ul>`,
     valid: s => !!s.x && s.x.length === s.W * s.H + 7,
     generate: L => ({ W: L.W, H: L.H }),
