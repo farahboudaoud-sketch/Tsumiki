@@ -266,6 +266,7 @@ function askHint() {
     3: hint.text
   };
   showHintText(msgs[hint.level], false, hint.level === 3 && !!hint.apply);
+  if (hint.level === 3) $('applyBtn').textContent = hint.applyLabel || 'Poser';
   $('hintBtn').classList.remove('pulse');
   $('hintBtn').querySelector('span').textContent = hint.level < 3 ? 'Suite' : 'Indice';
   st.lastProg = Date.now();
@@ -301,6 +302,15 @@ function doUndo() {
   if (!undo.length || won) return;
   st.x = undo.pop();
   hint = null; showHintText(''); render(); save();
+}
+
+// ---------- confirmation (in-page dialog) ----------
+function askConfirm(text, okLabel, onOk) {
+  $('cfText').textContent = text;
+  $('cfYes').textContent = okLabel;
+  $('confirm').classList.add('on');
+  $('cfYes').onclick = () => { $('confirm').classList.remove('on'); onOk(); };
+  $('cfNo').onclick = () => $('confirm').classList.remove('on');
 }
 function reset() {
   if (!st) return;
@@ -416,8 +426,15 @@ function init() {
   $('applyBtn').addEventListener('click', applyHint);
   $('verifyBtn').addEventListener('click', verify);
   $('undoBtn').addEventListener('click', doUndo);
-  $('resetBtn').addEventListener('click', reset);
-  $('newBtn').addEventListener('click', () => newGame(st ? st.level : Object.keys(G.levels)[0]));
+  $('resetBtn').addEventListener('click', () => {
+    if (!st || won || !st.x.some(v => v)) { reset(); return; }
+    askConfirm('Effacer tous tes coups sur cette grille ? Tu pourras revenir en arrière avec Annuler.', 'Effacer', reset);
+  });
+  $('newBtn').addEventListener('click', () => {
+    const go = () => newGame(st ? st.level : Object.keys(G.levels)[0]);
+    if (!st || won || !st.x.some(v => v)) { go(); return; }
+    askConfirm('Commencer une nouvelle grille ? La grille en cours sera perdue.', 'Nouvelle grille', go);
+  });
   $('winNew').addEventListener('click', () => newGame(st.level));
   window.addEventListener('resize', () => fitStage(false));
   $('rulesBtn').addEventListener('click', () => $('rules').classList.add('on'));

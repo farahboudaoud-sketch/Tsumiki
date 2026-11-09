@@ -18,9 +18,11 @@
     [[0, 0], [1, 1]], [[0, 1], [1, 0]], [[0, 0], [1, 1], [2, 2]], [[0, 2], [1, 1], [2, 0]]
   ];
   const WEIGHT = SHAPES.map(sh => sh.length === 9 ? 1 : sh.length === 1 ? 2 : sh.length >= 5 ? 2 : 3);
+  // hard mode: mostly big pieces, few small ones to fill the gaps
+  const WEIGHT_HARD = SHAPES.map(sh => sh.length === 9 ? 2 : sh.length <= 2 ? 0.4 : sh.length >= 5 ? 4 : 2);
   const size = sh => ({ h: Math.max(...sh.map(p => p[0])) + 1, w: Math.max(...sh.map(p => p[1])) + 1 });
   const LV = {
-    petit:     { W: 7,  H: 7,  label: 'Défi',      kanji: '狭', sizeLabel: '7×7 · peu de place' },
+    petit:     { W: 7,  H: 7,  label: 'Défi',      kanji: '狭', sizeLabel: '7×7 · grandes pièces, sans filet', hard: true },
     classique: { W: 8,  H: 8,  label: 'Classique', kanji: '積', sizeLabel: '8×8' },
     grand:     { W: 10, H: 10, label: 'Grand',     kanji: '広', sizeLabel: '10×10 · plus de place' }
   };
@@ -28,11 +30,12 @@
   const N = s => s.W * s.H, T = s => N(s), SC = s => N(s) + 3, STREAK = s => N(s) + 4, MISS = s => N(s) + 5, LINES = s => N(s) + 6;
   const fits = (s, sh, r0, c0) => sh.every(([r, c]) => { const rr = r0 + r, cc = c0 + c; return rr >= 0 && cc >= 0 && rr < s.H && cc < s.W && !s.x[rr * s.W + cc]; });
   const fitsAnywhere = (s, id) => { const sh = SHAPES[id]; for (let r = 0; r < s.H; r++) for (let c = 0; c < s.W; c++) if (fits(s, sh, r, c)) return true; return false; };
-  function pick() { let t = WEIGHT.reduce((a, b) => a + b, 0), x = Math.random() * t; for (let i = 0; i < SHAPES.length; i++) { x -= WEIGHT[i]; if (x < 0) return i; } return 0; }
+  function pick(hard) { const W = hard ? WEIGHT_HARD : WEIGHT; let t = W.reduce((a, b) => a + b, 0), x = Math.random() * t; for (let i = 0; i < SHAPES.length; i++) { x -= W[i]; if (x < 0) return i; } return 0; }
   function deal(s) {
+    const hard = !!(LV[s.level] && LV[s.level].hard);
     let best = null;
-    for (let k = 0; k < 25; k++) {
-      const t = [pick(), pick(), pick()];
+    for (let k = 0; k < (hard ? 1 : 25); k++) {
+      const t = [pick(hard), pick(hard), pick(hard)];
       if (t.some(id => fitsAnywhere(s, id))) { best = t; break; }
       best = t;
     }
@@ -113,10 +116,10 @@
       <li>Une <b>ligne</b> ou une <b>colonne</b> complète s'efface et rapporte des points. Plusieurs à la fois rapportent beaucoup plus.</li>
       <li>Effacer des lignes plusieurs coups de suite crée une <b>série</b> qui multiplie les points (elle s'arrête après 3 coups sans ligne).</li>
       <li>Quand les trois pièces sont posées, trois nouvelles arrivent. La partie s'arrête quand <b>plus aucune pièce ne rentre</b>.</li></ul>${FIGS}
-      <h3>Modes</h3><ul><li><b>Défi</b> 7×7, <b>Classique</b> 8×8, <b>Grand</b> 10×10.</li></ul>`,
+      <h3>Modes</h3><ul><li><b>Défi</b> 7×7 : surtout de grandes pièces, et rien ne garantit qu'une pièce rentre. <b>Classique</b> 8×8, <b>Grand</b> 10×10 : au moins une des trois pièces rentre toujours au moment où elles arrivent.</li></ul>`,
     valid: s => !!s.x && s.x.length === s.W * s.H + 7,
     generate: L => ({ W: L.W, H: L.H }),
-    emptyX: s => { const x = new Array(s.W * s.H + 7).fill(0); const tmp = { W: s.W, H: s.H, x }; deal(tmp); return x; },
+    emptyX: s => { const x = new Array(s.W * s.H + 7).fill(0); const tmp = { W: s.W, H: s.H, x, level: s.level }; deal(tmp); return x; },
     prepare: () => { drag = null; pops = []; gain = null; },
     dims: s => ({ cols: s.W, rows: s.H + 3.7, ox: 0, oy: 0 }),
     progress: s => s.x[SC(s)],

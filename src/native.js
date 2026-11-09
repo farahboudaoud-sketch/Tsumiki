@@ -4,6 +4,8 @@
     var A = window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.App;
     if (!A) return;
     A.addListener('backButton', function () {
+      var cf = document.getElementById('confirm');
+      if (cf && cf.classList.contains('on')) { cf.classList.remove('on'); return; }
       var r = document.getElementById('rules');
       if (r.classList.contains('on')) { r.classList.remove('on'); return; }
       if (typeof hint !== 'undefined' && hint) { hint = null; showHintText(''); render(); return; }

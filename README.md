@@ -15,7 +15,7 @@ Les mises à jour s'installent par-dessus l'ancienne version sans perdre la part
 
 - **Règles** : faire glisser les trois pièces proposées sur le plateau (elles ne tournent pas) ; une ligne ou une colonne complète s'efface et rapporte des points. Quand les trois pièces sont posées, trois nouvelles arrivent ; la partie s'arrête quand plus aucune pièce ne rentre.
 - **Points** : un point par case posée, et pour les lignes effacées 10 × (nombre de lignes)², plus un bonus de **série** quand on efface des lignes plusieurs coups de suite (la série s'arrête après 3 coups sans ligne).
-- **3 modes** : Défi 7×7, Classique 8×8, Grand 10×10, avec un record par mode.
+- **3 modes** : Défi 7×7 (surtout de grandes pièces, sans garantie qu'une pièce rentre), Classique 8×8, Grand 10×10, avec un record par mode.
 - Aperçu de la pose et des lignes qui vont s'effacer pendant le glissement, pièces qui ne rentrent plus estompées, mode clair / sombre, sauvegarde automatique de la partie. Fonctionne hors connexion.
 
 ## Structure
